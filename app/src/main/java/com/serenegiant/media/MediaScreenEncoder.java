@@ -46,7 +46,7 @@ public class MediaScreenEncoder extends MediaVideoEncoderBase {
 
 	private static final String MIME_TYPE = MediaFormat.MIMETYPE_VIDEO_AVC;
 	// parameters for recording
-    private static final int FRAME_RATE = 25;
+    private static final int FRAME_RATE = 120;
 
 	private MediaProjection mMediaProjection;
     private final int mDensity;
@@ -187,12 +187,13 @@ public class MediaScreenEncoder extends MediaVideoEncoderBase {
 		protected Object processRequest(final int request, final int arg1, final int arg2, final Object obj) {
 			return null;
 		}
-
+int mCOun = 0;
 		// TextureSurfaceで映像を受け取った際のコールバックリスナー
 		private final OnFrameAvailableListener mOnFrameAvailableListener = new OnFrameAvailableListener() {
 			@Override
 			public void onFrameAvailable(final SurfaceTexture surfaceTexture) {
-//				if (DEBUG) Log.v(TAG, "onFrameAvailable:mIsRecording=" + mIsRecording);
+//				if (DEBUG)
+				//Log.v(TAG, "onFrameAvailable:mIsRecording=" + mIsRecording + " cnt: " + mCOun++);
 				if (mIsRecording) {
 					synchronized (mSync) {
 						requestDraw = true;

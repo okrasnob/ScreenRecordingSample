@@ -331,7 +331,10 @@ public abstract class MediaEncoder implements Runnable {
         }
 LOOP:	while (mIsCapturing) {
 			// get encoded data with maximum timeout duration of TIMEOUT_USEC(=10[msec])
-            encoderStatus = mMediaCodec.dequeueOutputBuffer(mBufferInfo, TIMEOUT_USEC);
+            encoderStatus = mMediaCodec.dequeueOutputBuffer(mBufferInfo, TIMEOUT_USEC * 1000);
+            if (!muxer.isStarted() && encoderStatus == MediaCodec.INFO_TRY_AGAIN_LATER) {
+				//encoderStatus = MediaCodec.INFO_OUTPUT_FORMAT_CHANGED;
+			}
             if (encoderStatus == MediaCodec.INFO_TRY_AGAIN_LATER) {
                 // wait 5 counts(=TIMEOUT_USEC x 5 = 50msec) until data/EOS come
                 if (!mIsEOS) {
@@ -382,7 +385,10 @@ LOOP:	while (mIsCapturing) {
                 	// therefor we should expand and prepare output format from buffer data.
                 	// This sample is for API>=18(>=Android 4.3), just ignore this flag here
 					if (DEBUG) Log.d(TAG, "drain:BUFFER_FLAG_CODEC_CONFIG");
-					mBufferInfo.size = 0;
+					int u = 1;
+					int d = 1;
+					u = d;
+					//mBufferInfo.size = 0;
                 }
 
                 if (mBufferInfo.size != 0) {
